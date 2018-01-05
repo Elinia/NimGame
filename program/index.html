@@ -7,9 +7,38 @@
     </head>
     <body>
         <h1>Nim Game</h1>
+        <div id="game_config">
+            <div>
+                <span>Offensive position: </span>
+                <select id="player1">
+                    <option selected="selected">player</option>
+                    <option>AI</option>
+                </select>
+                <span>Defensive position: </span>
+                <select id="player2">
+                    <option>player</option>
+                    <option selected="selected">AI</option>
+                </select>
+            </div>
+            <div>
+                <span>How many piles</span>
+                <select id="pile_count">
+                    <option>1</option>
+                    <option>2</option>
+                    <option selected="selected">3</option>
+                    <option>4</option>
+                    <option>5</option>
+                </select>
+                
+            </div>
+        </div>
+        <canvas id="game_board"></canvas>
         <input id="pile_index" />
         <input id="stones" />
         <input id="button" type="button" />
     </body>
+    <script src="ui.js"></script>
+    <script src="ai.js"></script>
     <script src="gameplay.js"></script>
+
 </html>
