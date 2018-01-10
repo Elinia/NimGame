@@ -5,26 +5,18 @@ NimGame = (function() {
 			"type": "player"
 		},
 		"player2": {
-			"type": "ai"
+			"type": "AI"
 		},
-		"stones": [-1, -1, -1]
+		"stones": [-1, -1, -1],
+		"message": ""
 	};
 
 	var get_action = function(player) {
 		return new Promise(function(resolve, reject) {
-			if (game_status[player]["type"] === "ai") {
-				resolve(MyAI.action(game_status["stones"]));
+			if (game_status[player]["type"] === "AI") {
+				MyAI.action(game_status["stones"],  resolve, reject);
 			} else if (game_status[player]["type"] === "player") {
-				var button = document.getElementById('button');
-				var pile_index = document.getElementById('pile_index');
-				var stones = document.getElementById('stones');
-				button.onclick = function() {
-					resolve({
-						"pile_index": parseInt(pile_index.value),
-						"stones": parseInt(stones.value),
-						"message": ""
-					})
-				};
+				UI.getPlayerAction(game_status["stones"], resolve, reject);
 			}
 		});
 	};
@@ -52,7 +44,7 @@ NimGame = (function() {
 		game_status["turn"] = player;
 		console.log(player + "'s turn");
 		console.log(game_status["stones"]);
-		// draw();
+		UI.drawGameBoard(game_status);
 		if (game_status[player] === undefined) {
 			throw "game error";
 		} else {
@@ -61,6 +53,7 @@ NimGame = (function() {
 					throw "action undefined";
 				}
 				if (game_status["stones"][action["pile_index"]] === undefined) {
+					console.log(action["pile_index"]);
 					throw "pile index out of range";
 				}
 				if (action["stones"] >= game_status["stones"][action["pile_index"]] || action["stones"] < 0) {
@@ -68,11 +61,13 @@ NimGame = (function() {
 				}
 
 				game_status["stones"][action["pile_index"]] = action["stones"];
-				console.log(player + ": " + action["message"]);
+				game_status["message"] = action["message"];
+				//console.log(player + ": " + action["message"]);
 				
 				if (game_finished()) {
 					game_status["winner"] = player;
-					console.log("winner is " + game_status["winner"] + "!");
+					//console.log("winner is " + game_status["winner"] + "!");
+					UI.drawFinish(player);
 					return;
 				} else {
 					next_turn();
@@ -83,13 +78,8 @@ NimGame = (function() {
 	};
 
 	return {
-		init: function() {
-			UI.gameConfig().then(function(config) {
-				NimGame.start(config);
-			});
-		},
 		start: function(config) {
-			game_status = default_config;
+			game_status = JSON.parse(JSON.stringify(default_config));
 			if (config !== undefined) {
 				for (var key in default_config) {
 					if (config[key] !== undefined) {
@@ -102,7 +92,7 @@ NimGame = (function() {
 					game_status["stones"][i] = Math.floor(Math.random()*10+1)
 				}
 			}
-			console.log(game_status);
+			//console.log(game_status);
 
 			turn("player1");
 		}
@@ -110,14 +100,3 @@ NimGame = (function() {
 
 	
 })();
-NimGame.init();
-/*NimGame.start({
-	"player1": {
-		"type": "player"
-	},
-	"player2": {
-		"type": "ai"
-	},
-	"stones": [-1, -1, -1],
-	"offensive": "player1"
-});*/
