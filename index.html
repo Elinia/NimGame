@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Nim Game</title>
+    </head>
+    <body>
+        <h1>Nim Game</h1>
+        <div id="game_config">
+            <div>
+                <span>Offensive position: </span>
+                <select id="player1">
+                    <option value="player" selected="selected">player</option>
+                    <option value="AI">AI</option>
+                </select>
+                <span>Defensive position: </span>
+                <select id="player2">
+                    <option value="player">player</option>
+                    <option value="AI" selected="selected">AI</option>
+                </select>
+            </div>
+            <div>
+                <span>How many piles: </span>
+                <select id="pile_count">
+                    <option value="2">2</option>
+                    <option value="3" selected="selected">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                </select>
+                <span>How many stones in each pile: </span>
+                <span id="stones_selects"></span>
+            </div>
+        </div>
+        <div>
+            <canvas id="game_board" width="800" height="600"></canvas>
+        </div>
+    </body>
+    <script src="./program/ui.js"></script>
+    <script src="./program/ai.js"></script>
+    <script src="./program/gameplay.js"></script>
+
+</html>
